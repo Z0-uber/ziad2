@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول باستخدام رقم الهاتف</title>
+</head>
+<body>
+    <h2>تسجيل الدخول باستخدام رقم الهاتف</h2>
+    <form id="phoneForm" action="send_otp.php" method="POST">
+        <label for="phone_number">رقم الهاتف:</label>
+        <input type="text" id="phone_number" name="phone_number" required>
+        <button type="submit">إرسال OTP</button>
+    </form>
+
+    <div id="responseMessage"></div> <!-- لعرض رسالة التأكيد أو الخطأ -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // التعامل مع إرسال النموذج باستخدام AJAX بدون إعادة تحميل الصفحة
+        $(document).ready(function(){
+            $('#phoneForm').on('submit', function(e){
+                e.preventDefault(); // إيقاف الإرسال العادي للنموذج
+
+                var phoneNumber = $('#phone_number').val();
+
+                $.ajax({
+                    url: 'send_otp.php', // ملف PHP الذي يرسل OTP
+                    method: 'POST',
+                    data: { phone_number: phoneNumber },
+                    success: function(response){
+                        $('#responseMessage').html(response); // عرض الرسالة بعد الإرسال
+                    },
+                    error: function(){
+                        $('#responseMessage').html("حدث خطأ أثناء إرسال OTP.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
